@@ -17,8 +17,8 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final double screenWidth = MediaQuery.of(context).size.width;
-    final double screenHeight = MediaQuery.of(context).size.height;
+    // final double screenWidth = MediaQuery.of(context).size.width;
+    // final double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: adminAppBar(context),
@@ -27,11 +27,11 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
       body: ListView(
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Align(
+                const Align(
                   alignment: Alignment.center,
                   child: Text(
                     "Analytics",
@@ -41,8 +41,8 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 30),
-                Align(
+                const SizedBox(height: 30),
+                const Align(
                   alignment: Alignment.center,
                   child: Text(
                     "Surveyed Alumni Based on Year Graduated",
@@ -64,24 +64,24 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                     },
                   ),
                 ),
-                OlopscBarChart(
+                const OlopscBarChart(
                   collectionName: 'question_2',
                   questionName: 'Relevance',
                   toolTip:
                       "The skills you've mentioned helped you in pursuing your career path",
                 ),
-                OlopscBarChart(
+                const OlopscBarChart(
                   collectionName: 'question_3',
                   questionName: 'Continuity',
                   toolTip: "Your first job aligns with your current job",
                 ),
-                OlopscBarChart(
+                const OlopscBarChart(
                   collectionName: 'question_5',
                   questionName: 'Compatibility',
                   toolTip:
                       "The program you took in OLOPSC matches your current job",
                 ),
-                OlopscBarChart(
+                const OlopscBarChart(
                   collectionName: 'question_6',
                   questionName: 'Satisfaction',
                   toolTip: "You are satisfied with your current job.",
