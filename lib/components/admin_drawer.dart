@@ -70,7 +70,7 @@ Drawer adminDrawer(BuildContext context) => Drawer(
                     js.context.callMethod(
                       'open',
                       [
-                        'https://olopsc-alumni-tracking-system.web.app/',
+                        'https://olopsc-forms.web.app/',
                         '_blank'
                       ],
                     );

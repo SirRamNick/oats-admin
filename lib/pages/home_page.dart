@@ -6,7 +6,6 @@ import 'package:admin/pages/profile_page.dart';
 import 'package:admin/services/firebase.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 enum SearchBy {
@@ -75,12 +74,7 @@ class _HomePageState extends State<HomePage> {
         return applySort()
             .where('searchable_name', arrayContains: searchStringQuery);
       } else if (selected == SearchBy.yearGraduated) {
-        int? searchIntQuery = int.tryParse(searchStringQuery);
-        if (searchIntQuery != null) {
-          return applySort().where('year_graduated', isEqualTo: searchIntQuery);
-        } else {
-          return applySort().where('last_name', isEqualTo: '');
-        }
+          return applySort().where('year_graduated', isEqualTo: searchStringQuery);
       } else if (selected == SearchBy.program) {
         return applySort().where('degree', isEqualTo: searchStringQuery);
       }
