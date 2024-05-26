@@ -1,6 +1,7 @@
 import 'package:admin/components/admin_appbar.dart';
 import 'package:admin/components/admin_drawer.dart';
 import 'package:admin/components/charts/bar_chart.dart';
+import 'package:admin/components/charts/line_chart.dart';
 import 'package:admin/services/firebase.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -52,18 +53,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                Center(
-                  child: FutureBuilder(
-                    future:
-                        FirebaseFirestore.instance.collection('alumni').get(),
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        return Container();
-                      }
-                      return Text(snapshot.data!.docs.length.toString());
-                    },
-                  ),
-                ),
+                OlopscLineChart(),
                 const OlopscBarChart(
                   collectionName: 'question_2',
                   questionName: 'Relevance',
