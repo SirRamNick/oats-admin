@@ -3,11 +3,16 @@ import 'package:admin/components/admin_drawer.dart';
 import 'package:admin/components/charts/bar_chart.dart';
 import 'package:admin/components/charts/line_chart.dart';
 import 'package:admin/services/firebase.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
 
 class AnalyticsPage extends StatefulWidget {
-  const AnalyticsPage({super.key});
+  final GenerativeModel model;
+  const AnalyticsPage({
+    super.key,
+    required this.model,
+  });
 
   @override
   State<AnalyticsPage> createState() => _AnalyticsPageState();
@@ -16,6 +21,21 @@ class AnalyticsPage extends StatefulWidget {
 class _AnalyticsPageState extends State<AnalyticsPage> {
   late final FirestoreService stats = FirestoreService();
 
+  void _dialogBox(BuildContext context, String content) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: Text(
+          content,
+          style: TextStyle(
+            fontSize: 10,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // final double screenWidth = MediaQuery.of(context).size.width;
@@ -23,10 +43,26 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
 
     return Scaffold(
       appBar: adminAppBar(context),
-      drawer: adminDrawer(context),
+      drawer: adminDrawer(context, widget.model),
       backgroundColor: const Color(0xFFFFD22F),
       body: ListView(
         children: [
+          TextButton(
+            onPressed: () async {
+              final Iterable<Content> content = [
+                Content.text('''Who is Jose Rizal''')
+              ];
+              final GenerateContentResponse response =
+                  await widget.model.generateContent(content);
+              _dialogBox(context, response.text!);
+            },
+            child: Text(
+              'Analyze Data',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(

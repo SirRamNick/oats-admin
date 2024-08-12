@@ -7,6 +7,7 @@ import 'package:admin/services/firebase.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
 
 enum SearchBy {
   name,
@@ -15,7 +16,11 @@ enum SearchBy {
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final GenerativeModel model;
+  const HomePage({
+    super.key,
+    required this.model,
+  });
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -30,6 +35,14 @@ class _HomePageState extends State<HomePage> {
   bool? sortByYearGraduatedAscending;
   int? alumniCount;
 
+  int pageSize = 10;
+  int currentPage = 1;
+  DocumentSnapshot? lastDocument;
+  bool hasNextPage = true;
+  bool hasPreviousPage = false;
+  List<DocumentSnapshot> currentPageData = [];
+  List<DocumentSnapshot> previousPageLastDocuments = [];
+
   PopupMenuItem degreePopupMenuItem(
           String degree, String searchStringForDegree) =>
       PopupMenuItem(
@@ -42,7 +55,11 @@ class _HomePageState extends State<HomePage> {
       );
 
   Query getAlumniQuery(SearchBy selected) {
-    Query alumniQuery = alumniBase.alumni;
+    Query alumniQuery = alumniBase.alumni.limit(pageSize);
+
+    if (lastDocument != null) {
+      alumniQuery = alumniQuery.startAfterDocument(lastDocument!);
+    }
 
     Query firstSort(Query q) {
       if (sortByNameAscending == true) {
@@ -74,12 +91,59 @@ class _HomePageState extends State<HomePage> {
         return applySort()
             .where('searchable_name', arrayContains: searchStringQuery);
       } else if (selected == SearchBy.yearGraduated) {
-          return applySort().where('year_graduated', isEqualTo: searchStringQuery);
+        return applySort()
+            .where('year_graduated', isEqualTo: searchStringQuery);
       } else if (selected == SearchBy.program) {
         return applySort().where('degree', isEqualTo: searchStringQuery);
       }
     }
     return applySort();
+  }
+
+  Future<void> loadNextPage() async {
+    if (!hasNextPage) return;
+
+    Query query = getAlumniQuery(searchParam);
+    QuerySnapshot querySnapshot = await query.get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      setState(() {
+        previousPageLastDocuments.add(lastDocument!);
+        lastDocument = querySnapshot.docs.last;
+        currentPageData = querySnapshot.docs;
+        currentPage++;
+        hasNextPage = querySnapshot.docs.length == pageSize;
+        hasPreviousPage = true;
+      });
+    } else {
+      setState(() {
+        hasNextPage = false;
+      });
+    }
+  }
+
+  Future<void> loadPreviousPage() async {
+    if (!hasPreviousPage) return;
+
+    setState(() {
+      currentPage--;
+      if (currentPage == 1) {
+        hasPreviousPage = false;
+        lastDocument = null;
+      } else {
+        lastDocument = previousPageLastDocuments.removeLast();
+      }
+      hasNextPage = true;
+    });
+
+    Query query = getAlumniQuery(searchParam);
+    QuerySnapshot querySnapshot = await query.get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      setState(() {
+        currentPageData = querySnapshot.docs;
+      });
+    }
   }
 
   @override
@@ -88,6 +152,20 @@ class _HomePageState extends State<HomePage> {
     searchController = TextEditingController();
     searchStringQuery = '';
     searchParam = SearchBy.name;
+    loadInitialData();
+  }
+
+  Future<void> loadInitialData() async {
+    Query query = getAlumniQuery(searchParam);
+    QuerySnapshot querySnapshot = await query.get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      setState(() {
+        currentPageData = querySnapshot.docs;
+        lastDocument = querySnapshot.docs.last;
+        hasNextPage = querySnapshot.docs.length == pageSize;
+      });
+    }
   }
 
   @override
@@ -99,13 +177,13 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
-    final double screenHeight = MediaQuery.of(context).size.height;
+    // final double screenHeight = MediaQuery.of(context).size.height;
     final searchByPopupMenu = GlobalKey<PopupMenuButtonState>();
     final degreePopupMenu = GlobalKey<PopupMenuButtonState>();
 
     return Scaffold(
       appBar: adminAppBar(context),
-      drawer: adminDrawer(context),
+      drawer: adminDrawer(context, widget.model),
       body: ListView(
         children: [
           // Search Bar
@@ -159,6 +237,12 @@ class _HomePageState extends State<HomePage> {
                     onChanged: (value) {
                       setState(() {
                         searchStringQuery = value;
+                        currentPage = 1;
+                        lastDocument = null;
+                        previousPageLastDocuments.clear();
+                        hasNextPage = true;
+                        hasPreviousPage = false;
+                        loadInitialData();
                       });
                     },
                     onTap: () {
@@ -565,7 +649,23 @@ class _HomePageState extends State<HomePage> {
                 }
               },
             ),
-          )
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: hasPreviousPage ? loadPreviousPage : null,
+                child: Text("Previous"),
+              ),
+              SizedBox(width: 20),
+              Text("Page $currentPage"),
+              SizedBox(width: 20),
+              ElevatedButton(
+                onPressed: hasNextPage ? loadNextPage : null,
+                child: Text("Next"),
+              ),
+            ],
+          ),
         ],
       ),
       floatingActionButton: homeHelpActionButton(context),

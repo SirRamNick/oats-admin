@@ -3,8 +3,9 @@ import 'package:admin/components/page_transition.dart';
 import 'package:admin/pages/analytics_page.dart';
 import 'package:admin/pages/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
 
-Drawer adminDrawer(BuildContext context) => Drawer(
+Drawer adminDrawer(BuildContext context, [GenerativeModel? model]) => Drawer(
       child: Column(
         children: [
           Expanded(
@@ -53,7 +54,10 @@ Drawer adminDrawer(BuildContext context) => Drawer(
                   onPressed: () {
                     Navigator.of(context).pop();
                     Navigator.pushReplacement(
-                        context, instantTransitionTo(const HomePage()));
+                        context,
+                        instantTransitionTo(HomePage(
+                          model: model!,
+                        )));
                   },
                   child: const Align(
                     alignment: Alignment.centerLeft,
@@ -69,10 +73,7 @@ Drawer adminDrawer(BuildContext context) => Drawer(
                     Navigator.of(context).pop();
                     js.context.callMethod(
                       'open',
-                      [
-                        'https://olopsc-forms.web.app/',
-                        '_blank'
-                      ],
+                      ['https://olopsc-forms.web.app/', '_blank'],
                     );
                   },
                   child: const Align(
@@ -87,8 +88,8 @@ Drawer adminDrawer(BuildContext context) => Drawer(
                   ),
                   onPressed: () {
                     Navigator.of(context).pop();
-                    Navigator.pushReplacement(
-                        context, instantTransitionTo(const AnalyticsPage()));
+                    Navigator.pushReplacement(context,
+                        instantTransitionTo(AnalyticsPage(model: model!)));
                   },
                   child: const Align(
                     alignment: Alignment.centerLeft,

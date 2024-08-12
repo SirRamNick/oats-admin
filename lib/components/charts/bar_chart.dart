@@ -194,7 +194,13 @@ class OlopscBarChartState extends State<OlopscBarChart> {
                                         data[value.toInt()]['degree'];
                                     return SideTitleWidget(
                                       axisSide: meta.axisSide,
-                                      child: Text(course),
+                                      child: Text(
+                                        course,
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                     );
                                   },
                                 ),

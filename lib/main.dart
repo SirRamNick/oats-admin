@@ -3,15 +3,25 @@ import 'package:admin/firebase_options.dart';
 import 'package:admin/pages/home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const MyApp());
+  const String apiKey = 'AIzaSyDfhh7Ipr1c24IecqB3cofFXv9vmcpGelc';
+  final GenerativeModel model =
+      GenerativeModel(model: 'gemini-1.5-flash', apiKey: apiKey);
+  runApp(MyApp(
+    model: model,
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final GenerativeModel? model;
+  const MyApp({
+    super.key,
+    this.model,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +29,9 @@ class MyApp extends StatelessWidget {
       theme: adminTheme,
       title: "OATS Admin Site",
       debugShowCheckedModeBanner: false,
-      home: const HomePage(),
+      home: HomePage(
+        model: model!,
+      ),
     );
   }
 }
