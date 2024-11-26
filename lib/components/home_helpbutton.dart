@@ -79,28 +79,6 @@ FloatingActionButton homeHelpActionButton(BuildContext context) =>
                     ),
                   ),
                   ListTile(
-                    leading: Icon(Icons.sort),
-                    title: Text(
-                      "Sort by Name",
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    subtitle: Text(
-                      "It is located at the top row of the alumni list with the 'Name' text. It sorts the displayed alumni list by surname. By clicking on it, the list will be sorted by surname in alphabetical order. Clicking on it again will sort the list in reverse alphabetical order. And clicking on it again will go back to its default sorting method.",
-                      style: TextStyle(fontSize: 15),
-                    ),
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.sort),
-                    title: Text(
-                      "Sort by Year Graduated",
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    subtitle: Text(
-                      "It is located at the top row of the alumni list with the 'Year Graduated' text. It sorts the displayed alumni list by the year they have graduated. It functions almost the same as the 'Sort by Name' button, but it sorts by year graduated.",
-                      style: TextStyle(fontSize: 15),
-                    ),
-                  ),
-                  ListTile(
                     leading: Icon(Icons.person),
                     title: Text(
                       "Alumni Entry",
