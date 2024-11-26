@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 ThemeData adminTheme = ThemeData(
   useMaterial3: true,
   primaryColor: const Color(0xFF0B085F),
+  scaffoldBackgroundColor: const Color(0xFFFFD22F),
   primaryTextTheme: const TextTheme(
     bodySmall: TextStyle(color: Colors.white),
     bodyMedium: TextStyle(color: Colors.white),

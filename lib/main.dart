@@ -8,7 +8,7 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  const String apiKey = 'AIzaSyDfhh7Ipr1c24IecqB3cofFXv9vmcpGelc';
+  const String apiKey = 'AIzaSyD6Q3E-KjDfBdWsSKhZ0GoqJfvFqS-whTE';
   final GenerativeModel model =
       GenerativeModel(model: 'gemini-1.5-flash', apiKey: apiKey);
   runApp(MyApp(
