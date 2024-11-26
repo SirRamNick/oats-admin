@@ -31,8 +31,6 @@ class _HomePageState extends State<HomePage> {
   late final TextEditingController searchController;
   late String searchStringQuery;
   late SearchBy searchParam;
-  bool? sortByNameAscending;
-  bool? sortByYearGraduatedAscending;
   int? alumniCount;
 
   int pageSize = 10;
@@ -57,47 +55,22 @@ class _HomePageState extends State<HomePage> {
   Query getAlumniQuery(SearchBy selected) {
     Query alumniQuery = alumniBase.alumni.limit(pageSize);
 
-    if (lastDocument != null) {
-      alumniQuery = alumniQuery.startAfterDocument(lastDocument!);
-    }
-
-    Query firstSort(Query q) {
-      if (sortByNameAscending == true) {
-        return q.orderBy('last_name', descending: false);
-      } else if (sortByNameAscending == false) {
-        return q.orderBy('last_name', descending: true);
-      }
-      return q;
-    }
-
-    Query secondSort(Query q) {
-      if (sortByYearGraduatedAscending == true) {
-        return q.orderBy('year_graduated', descending: false);
-      } else if (sortByYearGraduatedAscending == false) {
-        return q.orderBy('year_graduated', descending: true);
-      }
-      return q;
-    }
-
-    Query applySort() {
-      if (sortByNameAscending != null || sortByYearGraduatedAscending != null) {
-        return secondSort(firstSort(alumniQuery));
-      }
-      return alumniQuery;
-    }
+    // if (lastDocument != null) {
+    //   alumniQuery = alumniQuery.startAfterDocument(lastDocument!);
+    // }
 
     if (searchStringQuery != '') {
       if (selected == SearchBy.name) {
-        return applySort()
-            .where('searchable_name', arrayContains: searchStringQuery);
+        return alumniQuery.where('searchable_name',
+            arrayContains: searchStringQuery);
       } else if (selected == SearchBy.yearGraduated) {
-        return applySort()
-            .where('year_graduated', isEqualTo: searchStringQuery);
+        return alumniQuery.where('year_graduated',
+            isEqualTo: searchStringQuery);
       } else if (selected == SearchBy.program) {
-        return applySort().where('degree', isEqualTo: searchStringQuery);
+        return alumniQuery.where('degree', isEqualTo: searchStringQuery);
       }
     }
-    return applySort();
+    return alumniQuery;
   }
 
   Future<void> loadNextPage() async {
@@ -243,12 +216,6 @@ class _HomePageState extends State<HomePage> {
                         hasNextPage = true;
                         hasPreviousPage = false;
                         loadInitialData();
-                      });
-                    },
-                    onTap: () {
-                      setState(() {
-                        sortByNameAscending = null;
-                        sortByYearGraduatedAscending = null;
                       });
                     },
                   ),
@@ -467,50 +434,17 @@ class _HomePageState extends State<HomePage> {
                           ),
                           color: Colors.white,
                         ),
-                        columns: [
+                        columns: const [
                           DataColumn(
                             label: Expanded(
                               // Sort by name
-                              child: searchStringQuery != ''
-                                  ? const Text(
-                                      "Name",
-                                      style: TextStyle(fontSize: 12),
-                                    )
-                                  : InkWell(
-                                      onTap: () {
-                                        setState(() {
-                                          sortByYearGraduatedAscending = null;
-                                          if (sortByNameAscending == null) {
-                                            sortByNameAscending = true;
-                                          } else if (sortByNameAscending ==
-                                              true) {
-                                            sortByNameAscending = false;
-                                          } else {
-                                            sortByNameAscending = null;
-                                          }
-                                        });
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            sortByNameAscending == true
-                                                ? Icons.arrow_drop_up
-                                                : sortByNameAscending == false
-                                                    ? Icons.arrow_drop_down
-                                                    : Icons.sort,
-                                            size: 20,
-                                          ),
-                                          const SizedBox(width: 5),
-                                          const Text(
-                                            "Name",
-                                            style: TextStyle(fontSize: 12),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                              child: Text(
+                                "Name",
+                                style: TextStyle(fontSize: 12),
+                              ),
                             ),
                           ),
-                          const DataColumn(
+                          DataColumn(
                             label: Expanded(
                               child: Text(
                                 "Sex",
@@ -518,7 +452,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                           ),
-                          const DataColumn(
+                          DataColumn(
                             label: Expanded(
                               child: Text(
                                 "Degree",
@@ -527,52 +461,16 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           DataColumn(
-                            label: Expanded(
-                              // Sort by year graduated
-                              child: searchStringQuery != ''
-                                  ? const Text(
-                                      "Year Graduated",
-                                      style: TextStyle(fontSize: 12),
-                                    )
-                                  : InkWell(
-                                      onTap: () {
-                                        setState(() {
-                                          sortByNameAscending = null;
-                                          if (sortByYearGraduatedAscending ==
-                                              null) {
-                                            sortByYearGraduatedAscending = true;
-                                          } else if (sortByYearGraduatedAscending ==
-                                              true) {
-                                            sortByYearGraduatedAscending =
-                                                false;
-                                          } else {
-                                            sortByYearGraduatedAscending = null;
-                                          }
-                                        });
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            sortByYearGraduatedAscending == true
-                                                ? Icons.arrow_drop_up
-                                                : sortByYearGraduatedAscending ==
-                                                        false
-                                                    ? Icons.arrow_drop_down
-                                                    : Icons.sort,
-                                            size: 20,
-                                          ),
-                                          const SizedBox(width: 5),
-                                          const Text(
-                                            "Year Graduated",
-                                            style: TextStyle(fontSize: 12),
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                            label: SizedBox(
+                              width: 100,
+                              // Sort by name
+                              child: Text(
+                                "Year Graduated",
+                                style: TextStyle(fontSize: 12),
+                              ),
                             ),
                           ),
-                          const DataColumn(
+                          DataColumn(
                             label: Expanded(
                               child: Row(
                                 children: [
