@@ -2,6 +2,7 @@ import 'package:admin/components/admin_appbar.dart';
 import 'package:admin/components/admin_drawer.dart';
 import 'package:admin/components/home_helpbutton.dart';
 import 'package:admin/components/page_transition.dart';
+import 'package:admin/constants.dart';
 import 'package:admin/pages/profile_page.dart';
 import 'package:admin/services/firebase.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,16 +10,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 
-enum SearchBy {
-  name,
-  yearGraduated,
-  program,
-}
-
 class HomePage extends StatefulWidget {
   final GenerativeModel model;
+  final String searchText;
+  final SearchBy searchParameter;
   const HomePage({
     super.key,
+    required this.searchText,
+    required this.searchParameter,
     required this.model,
   });
 
@@ -29,8 +28,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   FirestoreService alumniBase = FirestoreService();
   late final TextEditingController searchController;
-  late String searchStringQuery;
-  late SearchBy searchParam;
+  late String searchStringQuery = widget.searchText;
+  late SearchBy searchParam = widget.searchParameter;
   int? alumniCount;
 
   int pageSize = 10;
@@ -122,9 +121,9 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    searchController = TextEditingController();
-    searchStringQuery = '';
-    searchParam = SearchBy.name;
+    searchController = TextEditingController(text: searchStringQuery);
+    searchStringQuery = widget.searchText;
+    searchParam = widget.searchParameter;
     loadInitialData();
   }
 
@@ -176,20 +175,6 @@ class _HomePageState extends State<HomePage> {
                     controller: searchController,
                     enabled: true,
                     decoration: InputDecoration(
-                      suffixIcon: searchStringQuery != ''
-                          ? Padding(
-                              padding: const EdgeInsets.only(right: 5),
-                              child: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    searchController.clear();
-                                    searchStringQuery = '';
-                                  });
-                                },
-                                icon: const Icon(Icons.clear),
-                              ),
-                            )
-                          : null,
                       hintText: searchParam == SearchBy.name
                           ? "Search alumni"
                           : searchParam == SearchBy.yearGraduated

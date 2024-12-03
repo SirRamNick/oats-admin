@@ -1,6 +1,6 @@
 import 'package:admin/components/admin_color_theme.dart';
 import 'package:admin/firebase_options.dart';
-import 'package:admin/pages/home_page.dart';
+import 'package:admin/pages/landing_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       theme: adminTheme,
       title: "OATS Admin Site",
       debugShowCheckedModeBanner: false,
-      home: HomePage(
+      home: LandingPage(
         model: model!,
       ),
     );
