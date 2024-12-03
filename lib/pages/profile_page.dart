@@ -68,7 +68,7 @@ class _ProfilePageState extends State<ProfilePage> {
       drawer: adminDrawer(context),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(24),
           child: Column(
             children: [
               Row(
@@ -162,301 +162,386 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(children: [
-                    const Text(
-                      "Alumni Profile",
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+              const SizedBox(height: 24),
+              Padding(
+                padding: const EdgeInsets.only(left: 88, right: 88),
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      "First Name",
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                    Text(
-                                      firstName,
-                                      style: const TextStyle(fontSize: 20),
-                                    ),
-                                  ],
+                        Card(
+                          elevation: 4,
+                          child: Padding(
+                            padding: EdgeInsets.all(16),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                profileFullName(),
+                                IntrinsicHeight(
+                                  child: Row(
+                                    children: [
+                                      profileProgram(),
+                                      const SizedBox(width: 4),
+                                      const VerticalDivider(),
+                                      const SizedBox(width: 4),
+                                      profileYearGraduated(),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 10),
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      "Middle Name",
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                    Text(
-                                      middleName,
-                                      style: const TextStyle(fontSize: 20),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      "Last Name",
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                    Text(
-                                      lastName,
-                                      style: const TextStyle(fontSize: 20),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      "Sex",
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                    Text(
-                                      sex,
-                                      style: const TextStyle(fontSize: 20),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      "Date of Birth",
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                    Text(
-                                      dateOfBirth,
-                                      style: const TextStyle(fontSize: 20),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      "Email",
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                    Text(
-                                      email,
-                                      style: const TextStyle(fontSize: 20),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      "Year Graduated",
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                    Text(
-                                      "$yearGraduated",
-                                      style: const TextStyle(fontSize: 20),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      "Program",
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                    Text(
-                                      program,
-                                      style: const TextStyle(fontSize: 20),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      "Employment",
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                    Text(
-                                      employmentStatus,
-                                      style: const TextStyle(fontSize: 20),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      "What are the life skills OLOPSC has taught you?",
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                    Text(
-                                      question1,
-                                      style: const TextStyle(fontSize: 20),
-                                    ),
-                                  ],
+                        const SizedBox(height: 16),
+                        Card(
+                          elevation: 4,
+                          child: Padding(
+                            padding: EdgeInsets.all(16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Alumni Personal Information',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 10),
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      "The skills you've mentioned helped you in pursuing your career path.",
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                    Text(
-                                      question2,
-                                      style: const TextStyle(fontSize: 20),
-                                    ),
-                                  ],
+                                const Divider(),
+                                const SizedBox(height: 16),
+                                profileSex(),
+                                const SizedBox(height: 8),
+                                profileDateOfBirth(),
+                                const SizedBox(height: 8),
+                                profileEmployment(),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Card(
+                          elevation: 4,
+                          child: Padding(
+                            padding: EdgeInsets.all(16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Alumni Contact Info',
+                                  style: TextStyle(fontSize: 18),
                                 ),
-                              ),
-                              const SizedBox(height: 10),
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      "Your first job aligns with your current job.",
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                    Text(
-                                      question3,
-                                      style: const TextStyle(fontSize: 20),
-                                    ),
-                                  ],
+                                const Divider(),
+                                const SizedBox(height: 16),
+                                profileEmail(),
+                                const SizedBox(height: 16),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Card(
+                          elevation: 3,
+                          child: Padding(
+                            padding: EdgeInsets.all(16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Alumni Feedback',
+                                  style: TextStyle(fontSize: 18),
                                 ),
-                              ),
-                              const SizedBox(height: 10),
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      "How long does it take for you to land your first job after graduation?",
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                    Text(
-                                      question4,
-                                      style: const TextStyle(fontSize: 20),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      "The program you took in OLOPSC matches your current job.",
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                    Text(
-                                      question5,
-                                      style: const TextStyle(fontSize: 20),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      "You are satisfied with your current job.",
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                    Text(
-                                      question6,
-                                      style: const TextStyle(fontSize: 20),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
+                                const Divider(),
+                                const SizedBox(height: 16),
+                                profileQuestion1(),
+                                const SizedBox(height: 8),
+                                profileQuestion2(),
+                                const SizedBox(height: 8),
+                                profileQuestion3(),
+                                const SizedBox(height: 8),
+                                profileQuestion4(),
+                                const SizedBox(height: 8),
+                                profileQuestion5(),
+                                const SizedBox(height: 8),
+                                profileQuestion6(),
+                                const SizedBox(height: 30),
+                              ],
+                            ),
                           ),
                         )
                       ],
                     ),
-                  ]),
+                  ),
                 ),
-              )
+              ),
             ],
           ),
         ),
       ),
       // floatingActionButton: profileHelpActionButton(context),
+    );
+  }
+
+  Align profileQuestion6() {
+    return Align(
+      alignment: Alignment.topLeft,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "You are satisfied with your current job.",
+            style: TextStyle(fontSize: 15),
+          ),
+          Text(
+            question6,
+            style: const TextStyle(fontSize: 20),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Align profileQuestion5() {
+    return Align(
+      alignment: Alignment.topLeft,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "The program you took in OLOPSC matches your current job.",
+            style: TextStyle(fontSize: 15),
+          ),
+          Text(
+            question5,
+            style: const TextStyle(fontSize: 20),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Align profileQuestion4() {
+    return Align(
+      alignment: Alignment.topLeft,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "How long does it take for you to land your first job after graduation?",
+            style: TextStyle(fontSize: 15),
+          ),
+          Text(
+            question4,
+            style: const TextStyle(fontSize: 20),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Align profileQuestion3() {
+    return Align(
+      alignment: Alignment.topLeft,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Your first job aligns with your current job.",
+            style: TextStyle(fontSize: 15),
+          ),
+          Text(
+            question3,
+            style: const TextStyle(fontSize: 20),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Align profileQuestion2() {
+    return Align(
+      alignment: Alignment.topLeft,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "The skills you've mentioned helped you in pursuing your career path.",
+            style: TextStyle(fontSize: 15),
+          ),
+          Text(
+            question2,
+            style: const TextStyle(fontSize: 20),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Align profileQuestion1() {
+    return Align(
+      alignment: Alignment.topLeft,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "What are the life skills OLOPSC has taught you?",
+            style: TextStyle(fontSize: 15),
+          ),
+          Text(
+            question1,
+            style: const TextStyle(fontSize: 20),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Align profileEmployment() {
+    return Align(
+      alignment: Alignment.topLeft,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Employment",
+            style: TextStyle(
+                fontSize: 18, color: Color.fromARGB(255, 128, 128, 128)),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          const SizedBox(width: 70),
+          Text(
+            employmentStatus,
+            style: const TextStyle(fontSize: 20),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Align profileProgram() {
+    return Align(
+      alignment: Alignment.topLeft,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Program",
+            style: TextStyle(
+              fontSize: 14,
+            ),
+          ),
+          Text(
+            program,
+            style: const TextStyle(
+              fontSize: 16,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Align profileYearGraduated() {
+    return Align(
+      alignment: Alignment.topLeft,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Year Graduated",
+            style: TextStyle(fontSize: 14),
+          ),
+          Text(
+            "$yearGraduated",
+            style: const TextStyle(fontSize: 16),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Align profileEmail() {
+    return Align(
+      alignment: Alignment.topLeft,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Email",
+            style: TextStyle(
+                fontSize: 18, color: Color.fromARGB(255, 128, 128, 128)),
+          ),
+          const SizedBox(width: 138),
+          Text(
+            email,
+            style: const TextStyle(fontSize: 20),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Align profileDateOfBirth() {
+    return Align(
+      alignment: Alignment.topLeft,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Date of Birth",
+            style: TextStyle(
+                fontSize: 18, color: Color.fromARGB(255, 128, 128, 128)),
+          ),
+          const SizedBox(width: 80),
+          Text(
+            dateOfBirth,
+            style: const TextStyle(fontSize: 20),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Align profileSex() {
+    return Align(
+      alignment: Alignment.topLeft,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Sex",
+            style: TextStyle(
+                fontSize: 18, color: Color.fromARGB(255, 128, 128, 128)),
+          ),
+          const SizedBox(width: 154),
+          Text(
+            sex,
+            style: const TextStyle(fontSize: 20),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Align profileFullName() {
+    return Align(
+      alignment: Alignment.topLeft,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Full Name",
+            style: TextStyle(fontSize: 16),
+          ),
+          Text(
+            '$firstName, $lastName, $middleName',
+            style: const TextStyle(fontSize: 20),
+          ),
+        ],
+      ),
     );
   }
 }
