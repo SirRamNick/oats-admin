@@ -1,7 +1,7 @@
 import 'dart:js' as js;
 import 'package:admin/components/page_transition.dart';
 import 'package:admin/pages/analytics_page.dart';
-import 'package:admin/pages/landing_page.dart';
+import 'package:admin/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 
@@ -55,7 +55,7 @@ Drawer adminDrawer(BuildContext context, [GenerativeModel? model]) => Drawer(
                     Navigator.of(context).pop();
                     Navigator.pushReplacement(
                         context,
-                        normalTransitionTo(LandingPage(
+                        normalTransitionTo(HomePage(
                           model: model!,
                         )));
                   },
