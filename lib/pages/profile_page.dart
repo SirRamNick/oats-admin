@@ -3,6 +3,7 @@ import 'package:admin/components/admin_drawer.dart';
 import 'package:admin/services/firebase.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ProfilePage extends StatefulWidget {
   final DocumentSnapshot document;
@@ -67,6 +68,7 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: adminAppBar(context),
       drawer: adminDrawer(context),
       body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: Column(
@@ -163,8 +165,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
               const SizedBox(height: 24),
-              Padding(
-                padding: const EdgeInsets.only(left: 88, right: 88),
+              Container(
+                height: 1080,
+                width: 720,
                 child: Card(
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -255,17 +258,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                 const Divider(),
                                 const SizedBox(height: 16),
                                 profileQuestion1(),
-                                const SizedBox(height: 8),
+                                const SizedBox(height: 16),
                                 profileQuestion2(),
-                                const SizedBox(height: 8),
+                                const SizedBox(height: 16),
                                 profileQuestion3(),
-                                const SizedBox(height: 8),
+                                const SizedBox(height: 16),
                                 profileQuestion4(),
-                                const SizedBox(height: 8),
+                                const SizedBox(height: 16),
                                 profileQuestion5(),
-                                const SizedBox(height: 8),
+                                const SizedBox(height: 16),
                                 profileQuestion6(),
-                                const SizedBox(height: 30),
                               ],
                             ),
                           ),
@@ -430,13 +432,20 @@ class _ProfilePageState extends State<ProfilePage> {
           const Text(
             "Program",
             style: TextStyle(
+              fontWeight: FontWeight.bold,
               fontSize: 14,
             ),
           ),
-          Text(
-            program,
-            style: const TextStyle(
-              fontSize: 16,
+          Container(
+            height: 64,
+            width: 160,
+            child: Text(
+              program,
+              textDirection: TextDirection.ltr,
+              maxLines: 3,
+              style: const TextStyle(
+                fontSize: 16,
+              ),
             ),
           ),
         ],
@@ -452,7 +461,7 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           const Text(
             "Year Graduated",
-            style: TextStyle(fontSize: 14),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
           ),
           Text(
             "$yearGraduated",
@@ -479,6 +488,27 @@ class _ProfilePageState extends State<ProfilePage> {
             email,
             style: const TextStyle(fontSize: 20),
           ),
+          const SizedBox(width: 4),
+          IconButton(
+            color: Colors.grey,
+            onPressed: () async {
+              if (email.isNotEmpty) {
+                try {
+                  await Clipboard.setData(ClipboardData(text: email));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Copied to Clipboard')),
+                  );
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text('Failed to copy to clipboard')),
+                  );
+                }
+              }
+            },
+            icon: const Icon(Icons.copy),
+            iconSize: 20,
+          )
         ],
       ),
     );
@@ -534,7 +564,7 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           const Text(
             "Full Name",
-            style: TextStyle(fontSize: 16),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
           ),
           Text(
             '$firstName, $lastName, $middleName',
