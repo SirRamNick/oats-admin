@@ -1,5 +1,6 @@
 import "package:admin/components/admin_appbar.dart";
 import "package:admin/components/admin_drawer.dart";
+import "package:admin/components/home_helpbutton.dart";
 import "package:admin/constants.dart";
 import "package:admin/pages/results_page.dart";
 import "package:flutter/material.dart";
@@ -51,6 +52,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         appBar: adminAppBar(context, displayHeader: false),
         drawer: adminDrawer(context, widget.model),
+        floatingActionButton: homeHelpActionButton(context),
         backgroundColor: Theme.of(context).primaryColor,
         body: Container(
           constraints: const BoxConstraints.expand(),
@@ -132,7 +134,7 @@ class _HomePageState extends State<HomePage> {
                                     onChanged: (value) {
                                       setState(() {
                                         searchStringQuery = value;
-                                        if (searchStringQuery != '') {
+                                        if (searchStringQuery.trim() != '') {
                                           showSearchButton = true;
                                         } else {
                                           showSearchButton = false;

@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 
-FloatingActionButton homeHelpActionButton(BuildContext context) =>
+FloatingActionButton resultsHelpActionButton(BuildContext context) =>
     FloatingActionButton.extended(
-      backgroundColor: const Color(0xFFFFD22F),
-      label: const Text(
+      backgroundColor: Theme.of(context).primaryColor,
+      label: Text(
         "Help",
-        style: TextStyle(
-          color: Colors.black
-        ),
+        style: Theme.of(context).primaryTextTheme.bodyMedium,
       ),
-      icon: const Icon(
+      icon: Icon(
         Icons.help,
-        color: Colors.black,
+        color: Theme.of(context).primaryTextTheme.bodyMedium?.color,
       ),
       onPressed: () {
         showDialog(
@@ -25,14 +23,14 @@ FloatingActionButton homeHelpActionButton(BuildContext context) =>
                   Align(
                     alignment: Alignment.center,
                     child: Text(
-                      "Welcome to OATS Home Page!",
+                      "Welcome to OATS Results Page!",
                       style: TextStyle(fontSize: 25),
                     ),
                   ),
                   Divider(),
                   ListTile(
                     title: Text(
-                      "This help dialog will guide you through the complexities and features of the OATS Home Page.",
+                      "This help dialog will guide you through the complexities and features of the OATS Results Page.",
                       style: TextStyle(fontSize: 18),
                     ),
                   ),
@@ -54,7 +52,7 @@ FloatingActionButton homeHelpActionButton(BuildContext context) =>
                       style: TextStyle(fontSize: 18),
                     ),
                     subtitle: Text(
-                      "This is the rectangle editable text box located just below the main logo. It lets you search alumni using their name, the year they graduate or the program they previously enrol.",
+                      "This is the square field at the top of the screen. It lets you search alumni using their name, the year they graduate or the program they previously enrol",
                       style: TextStyle(fontSize: 15),
                     ),
                   ),
@@ -72,33 +70,22 @@ FloatingActionButton homeHelpActionButton(BuildContext context) =>
                   ListTile(
                     leading: Icon(Icons.list),
                     title: Text(
-                      "Search by name",
+                      "The Alumni List",
                       style: TextStyle(fontSize: 18),
                     ),
                     subtitle: Text(
-                      "This lets you search alumni by their name, whether it's their first name or last name.",
+                      "This is the list located below the search bar. It displays all the names of the alumni that answered the alumni registration site",
                       style: TextStyle(fontSize: 15),
                     ),
                   ),
                   ListTile(
-                    leading: Icon(Icons.list),
+                    leading: Icon(Icons.person),
                     title: Text(
-                      "Search by year graduated",
+                      "Alumni Entry",
                       style: TextStyle(fontSize: 18),
                     ),
                     subtitle: Text(
-                      "This lets you search alumni by year they graduated to OLOPSC.",
-                      style: TextStyle(fontSize: 15),
-                    ),
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.list),
-                    title: Text(
-                      "Search by program",
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    subtitle: Text(
-                      "This lets you search alumni by the program they previously enrolled.",
+                      "You can click on an entry from the list to check its profile.",
                       style: TextStyle(fontSize: 15),
                     ),
                   ),
