@@ -46,7 +46,8 @@ Drawer adminDrawer(BuildContext context, [GenerativeModel? model]) => Drawer(
                     ),
                   ),
                 ),
-                TextButton(
+                TextButton.icon(
+                  icon: const Icon(Icons.home),
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.black,
                     shape: const LinearBorder(),
@@ -59,12 +60,13 @@ Drawer adminDrawer(BuildContext context, [GenerativeModel? model]) => Drawer(
                           model: model!,
                         )));
                   },
-                  child: const Align(
+                  label: const Align(
                     alignment: Alignment.centerLeft,
                     child: Text("Home"),
                   ),
                 ),
-                TextButton(
+                TextButton.icon(
+                  icon: const Icon(Icons.add),
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.black,
                     shape: const LinearBorder(),
@@ -76,12 +78,13 @@ Drawer adminDrawer(BuildContext context, [GenerativeModel? model]) => Drawer(
                       ['https://olopsc-forms.web.app/', '_blank'],
                     );
                   },
-                  child: const Align(
+                  label: const Align(
                     alignment: Alignment.centerLeft,
                     child: Text("Add Alumni"),
                   ),
                 ),
-                TextButton(
+                TextButton.icon(
+                  icon: const Icon(Icons.analytics),
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.black,
                     shape: const LinearBorder(),
@@ -91,12 +94,13 @@ Drawer adminDrawer(BuildContext context, [GenerativeModel? model]) => Drawer(
                     Navigator.pushReplacement(context,
                         normalTransitionTo(AnalyticsPage(model: model!)));
                   },
-                  child: const Align(
+                  label: const Align(
                     alignment: Alignment.centerLeft,
                     child: Text("Analytics"),
                   ),
                 ),
-                TextButton(
+                TextButton.icon(
+                  icon: const Icon(Icons.code),
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.black,
                     shape: const LinearBorder(),
@@ -175,7 +179,7 @@ Drawer adminDrawer(BuildContext context, [GenerativeModel? model]) => Drawer(
                           ),
                         ]);
                   },
-                  child: const Align(
+                  label: const Align(
                     alignment: Alignment.centerLeft,
                     child: Text("About OATS"),
                   ),

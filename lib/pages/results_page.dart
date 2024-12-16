@@ -1,7 +1,7 @@
 import 'package:admin/components/admin_appbar.dart';
 import 'package:admin/components/admin_drawer.dart';
-import 'package:admin/components/home_helpbutton.dart';
 import 'package:admin/components/page_transition.dart';
+import 'package:admin/components/results_helpbutton.dart';
 import 'package:admin/constants.dart';
 import 'package:admin/pages/profile_page.dart';
 import 'package:admin/services/firebase.dart';
@@ -54,9 +54,10 @@ class _ResultsPageState extends State<ResultsPage> {
   Query getAlumniQuery(SearchBy selected) {
     Query alumniQuery = alumniBase.alumni.limit(pageSize);
 
-    // if (lastDocument != null) {
-    //   alumniQuery = alumniQuery.startAfterDocument(lastDocument!);
-    // }
+    // TODO: This conflicts with search querying
+    if (lastDocument != null) {
+      alumniQuery = alumniQuery.startAfterDocument(lastDocument!);
+    }
 
     if (searchStringQuery != '') {
       if (selected == SearchBy.name) {
@@ -80,8 +81,8 @@ class _ResultsPageState extends State<ResultsPage> {
 
     if (querySnapshot.docs.isNotEmpty) {
       setState(() {
-        previousPageLastDocuments.add(lastDocument!);
         lastDocument = querySnapshot.docs.last;
+        previousPageLastDocuments.add(lastDocument!);
         currentPageData = querySnapshot.docs;
         currentPage++;
         hasNextPage = querySnapshot.docs.length == pageSize;
@@ -198,7 +199,7 @@ class _ResultsPageState extends State<ResultsPage> {
                         currentPage = 1;
                         lastDocument = null;
                         previousPageLastDocuments.clear();
-                        hasNextPage = true;
+                        // hasNextPage = true; // assumes that search query has next page even if there's none
                         hasPreviousPage = false;
                         loadInitialData();
                       });
@@ -365,14 +366,12 @@ class _ResultsPageState extends State<ResultsPage> {
               stream: alumniBase.alumni.snapshots(),
               builder: (context, snapShot) {
                 if (!snapShot.hasData) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 17.0),
+                  return const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 17.0),
                     child: Card(
                       child: ListTile(
-                        title: Text(searchStringQuery == ''
-                            ? "Total Surveyed Alumni"
-                            : "Displayed Alumni Count"),
-                        subtitle: const Text("Loading..."),
+                        title: Text("Total Surveyed Alumni"),
+                        subtitle: Text("Loading..."),
                       ),
                     ),
                   );
@@ -381,7 +380,9 @@ class _ResultsPageState extends State<ResultsPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 17.0),
                   child: Card(
                     child: ListTile(
-                      title: const Text("Total Surveyed Alumni"),
+                      title: Text(searchController.text == ''
+                          ? "Total Surveyed Alumni"
+                          : "Displayed Alumni Count"),
                       subtitle: Text("${snapShot.data!.docs.length}"),
                     ),
                   ),
@@ -538,20 +539,20 @@ class _ResultsPageState extends State<ResultsPage> {
             children: [
               ElevatedButton(
                 onPressed: hasPreviousPage ? loadPreviousPage : null,
-                child: Text("Previous"),
+                child: const Text("Previous"),
               ),
-              SizedBox(width: 20),
+              const SizedBox(width: 20),
               Text("Page $currentPage"),
-              SizedBox(width: 20),
+              const SizedBox(width: 20),
               ElevatedButton(
                 onPressed: hasNextPage ? loadNextPage : null,
-                child: Text("Next"),
+                child: const Text("Next"),
               ),
             ],
           ),
         ],
       ),
-      floatingActionButton: homeHelpActionButton(context),
+      floatingActionButton: resultsHelpActionButton(context),
     );
   }
 }
