@@ -3,3 +3,4 @@ enum SearchBy {
   yearGraduated,
   program,
 }
+const int pageSize = 10;
