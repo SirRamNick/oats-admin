@@ -10,10 +10,7 @@ class FirestoreService {
   final CollectionReference empStats =
       FirebaseFirestore.instance.collection('employment_status');
 
-  // Create functionality is passed onto the Alumni Site
-
-  // Read
-  Future getAlumnus(String docID) => alumni.doc(docID).get();
+  
 
   // Delete
   Future deleteAlumnus(String? docID) => alumni.doc(docID).delete();
