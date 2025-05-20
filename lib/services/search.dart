@@ -1,4 +1,4 @@
-import 'package:admin/constants.dart';
+import 'package:admin/models/search_by.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SearchService {

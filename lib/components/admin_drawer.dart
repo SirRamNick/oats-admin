@@ -2,8 +2,11 @@ import 'dart:js' as js;
 import 'package:admin/components/page_transition.dart';
 import 'package:admin/pages/analytics_page.dart';
 import 'package:admin/pages/home_page.dart';
+import 'package:admin/services/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
+
+AuthenticationService _auth = AuthenticationService();
 
 Drawer adminDrawer(BuildContext context, [GenerativeModel? model]) => Drawer(
       child: Column(
@@ -182,6 +185,20 @@ Drawer adminDrawer(BuildContext context, [GenerativeModel? model]) => Drawer(
                   label: const Align(
                     alignment: Alignment.centerLeft,
                     child: Text("About OATS"),
+                  ),
+                ),
+                TextButton.icon(
+                  icon: const Icon(Icons.logout),
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.black,
+                    shape: const LinearBorder(),
+                  ),
+                  onPressed: () {
+                    _auth.signOut();
+                  },
+                  label: const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("Sign-out"),
                   ),
                 ),
               ],

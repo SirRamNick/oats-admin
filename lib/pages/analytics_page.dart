@@ -4,8 +4,8 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:admin/components/admin_appbar.dart';
 import 'package:admin/components/admin_drawer.dart';
-import 'package:admin/components/charts/olopsc_line_chart.dart';
-import 'package:admin/services/data.dart';
+import 'package:admin/components/charts/line_chart.dart';
+import 'package:admin/models/data.dart';
 import 'package:provider/provider.dart';
 
 class AnalyticsModel extends ChangeNotifier {

@@ -1,7 +1,7 @@
 import "package:admin/components/admin_appbar.dart";
 import "package:admin/components/admin_drawer.dart";
 import "package:admin/components/home_helpbutton.dart";
-import "package:admin/constants.dart";
+import "package:admin/models/search_by.dart";
 import "package:admin/pages/results_page.dart";
 import "package:flutter/material.dart";
 import "package:google_generative_ai/google_generative_ai.dart";

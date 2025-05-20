@@ -46,6 +46,8 @@ dependencies:
   
 
   syncfusion_flutter_charts: ^28.1.33
+  flutter_dotenv: ^5.2.1
+  firebase_auth: ^4.16.0
 
 
 
@@ -75,6 +77,8 @@ flutter:
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
+  assets:
+    - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -4,6 +4,7 @@ import 'package:admin/components/results_helpbutton.dart';
 import 'package:admin/components/alumni_list_view.dart';
 import 'package:admin/components/search_widget.dart';
 import 'package:admin/constants.dart';
+import 'package:admin/models/search_by.dart';
 import 'package:admin/services/firebase.dart';
 import 'package:admin/services/pagination.dart';
 import 'package:admin/services/search.dart';
