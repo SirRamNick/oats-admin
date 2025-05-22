@@ -30,7 +30,7 @@ ThemeData adminTheme = ThemeData(
   dividerTheme: const DividerThemeData(
     color: Colors.black,
   ),
-  dialogTheme: const DialogTheme(
+  dialogTheme: const DialogThemeData(
     backgroundColor: Color(0xFFE2E2E2),
     titleTextStyle: TextStyle(color: Colors.black, fontFamily: 'OpenSans'),
   ),

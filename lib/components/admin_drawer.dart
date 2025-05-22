@@ -1,6 +1,8 @@
 import 'dart:js' as js;
 import 'package:admin/components/page_transition.dart';
+import 'package:admin/components/two_option_dialog.dart';
 import 'package:admin/pages/analytics_page.dart';
+import 'package:admin/auth_gate.dart';
 import 'package:admin/pages/home_page.dart';
 import 'package:admin/services/authentication.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +10,7 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 
 AuthenticationService _auth = AuthenticationService();
 
-Drawer adminDrawer(BuildContext context, [GenerativeModel? model]) => Drawer(
+Drawer adminDrawer(BuildContext context, GenerativeModel model) => Drawer(
       child: Column(
         children: [
           Expanded(
@@ -60,7 +62,7 @@ Drawer adminDrawer(BuildContext context, [GenerativeModel? model]) => Drawer(
                     Navigator.pushReplacement(
                         context,
                         normalTransitionTo(HomePage(
-                          model: model!,
+                          model: model,
                         )));
                   },
                   label: const Align(
@@ -95,7 +97,7 @@ Drawer adminDrawer(BuildContext context, [GenerativeModel? model]) => Drawer(
                   onPressed: () {
                     Navigator.of(context).pop();
                     Navigator.pushReplacement(context,
-                        normalTransitionTo(AnalyticsPage(model: model!)));
+                        normalTransitionTo(AnalyticsPage(model: model)));
                   },
                   label: const Align(
                     alignment: Alignment.centerLeft,
@@ -171,7 +173,7 @@ Drawer adminDrawer(BuildContext context, [GenerativeModel? model]) => Drawer(
                               ),
                               SizedBox(height: 15),
                               Text(
-                                "(c) OLOPSC Computer Society 2024",
+                                "© OLOPSC Computer Society 2025",
                                 style: TextStyle(fontSize: 12),
                               ),
                               Text(
@@ -194,7 +196,21 @@ Drawer adminDrawer(BuildContext context, [GenerativeModel? model]) => Drawer(
                     shape: const LinearBorder(),
                   ),
                   onPressed: () {
-                    _auth.signOut();
+                    showDialog(
+                        context: context,
+                        builder: (context) => TwoOptionDialog(
+                              title: "Confirm Sign-out",
+                              content: "Are you sure you wanted to sign out?",
+                              firstOptionText: "Yes",
+                              secondOptionText: "No",
+                              onFirstOptionPressed: () {
+                                _auth.signOut();
+                                Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            AuthGate(model: model)));
+                              },
+                            ));
                   },
                   label: const Align(
                     alignment: Alignment.centerLeft,

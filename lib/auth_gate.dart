@@ -4,28 +4,37 @@ import 'package:admin/services/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 
-class AuthGate extends StatelessWidget {
-  final AuthenticationService _auth = AuthenticationService();
+class AuthGate extends StatefulWidget {
   final GenerativeModel model;
-  
-  AuthGate({
+
+  const AuthGate({
     super.key,
     required this.model,
   });
 
   @override
+  State<AuthGate> createState() => _AuthGateState();
+}
+
+class _AuthGateState extends State<AuthGate> {
+  final AuthenticationService _auth = AuthenticationService();
+
+  @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: _auth.getAuthenticationState(), 
+      stream: _auth.getAuthenticationState(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
-        }
-        else {
+          return Scaffold(
+              backgroundColor: Theme.of(context).primaryColor,
+              body: Center(
+                  child: CircularProgressIndicator(
+                color: Theme.of(context).scaffoldBackgroundColor,
+              )));
+        } else {
           if (snapshot.data != null) {
-            return HomePage(model: model);
-          }
-          else {
+            return HomePage(model: widget.model);
+          } else {
             return const LoginPage();
           }
         }

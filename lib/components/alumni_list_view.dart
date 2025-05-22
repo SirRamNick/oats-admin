@@ -1,13 +1,16 @@
 import "package:admin/components/page_transition.dart";
 import "package:admin/pages/profile_page.dart";
 import "package:flutter/material.dart";
+import "package:google_generative_ai/google_generative_ai.dart";
 
 class AlumniListView extends StatelessWidget {
   final List list;
+  final GenerativeModel model;
 
   const AlumniListView({
-    required this.list,
     super.key,
+    required this.list,
+    required this.model,
   });
 
   @override
@@ -113,7 +116,7 @@ class AlumniListView extends StatelessWidget {
                         Navigator.push(
                             context,
                             normalTransitionTo(
-                              ProfilePage(document: doc),
+                              ProfilePage(document: doc, model: model),
                             ));
                       }
                     },

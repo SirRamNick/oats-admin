@@ -123,7 +123,8 @@ class _ResultsPageState extends State<ResultsPage> {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.active ||
                     snapshot.connectionState == ConnectionState.done) {
-                  return AlumniListView(list: snapshot.data.docs);
+                  return AlumniListView(
+                      list: snapshot.data.docs, model: widget.model);
                 } else {
                   return Container(
                     margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),

@@ -1,16 +1,20 @@
 import 'package:admin/components/admin_appbar.dart';
 import 'package:admin/components/admin_drawer.dart';
+import 'package:admin/components/two_option_dialog.dart';
 import 'package:admin/services/firebase.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
 
 class ProfilePage extends StatefulWidget {
   final DocumentSnapshot document;
+  final GenerativeModel model;
 
   const ProfilePage({
     super.key,
     required this.document,
+    required this.model,
   });
 
   @override
@@ -66,7 +70,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: adminAppBar(context),
-      drawer: adminDrawer(context),
+      drawer: adminDrawer(context, widget.model),
       body: Container(
         height: double.infinity,
         decoration: const BoxDecoration(
@@ -228,37 +232,16 @@ class _ProfilePageState extends State<ProfilePage> {
       onPressed: () {
         showDialog(
           context: context,
-          builder: (context) => AlertDialog(
-            title: const Align(
-              alignment: Alignment.topCenter,
-              child: Text(
-                "Confirm Delete",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            content: Text(
-              "Delete '$firstName $lastName'?",
-              style: const TextStyle(fontSize: 18),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  alumniBase.deleteAlumnus('${doc.id}');
-                  Navigator.of(context).pop();
-                },
-                child: const Text("Yes"),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text("No"),
-              ),
-            ],
+          builder: (context) => TwoOptionDialog(
+            title: "Confirm Delete",
+            content: "Delete '$firstName $lastName?'",
+            firstOptionText: "Yes",
+            secondOptionText: "No",
+            onFirstOptionPressed: () {
+              Navigator.of(context).pop();
+              alumniBase.deleteAlumnus('${doc.id}');
+              Navigator.of(context).pop();
+            },
           ),
         );
       },

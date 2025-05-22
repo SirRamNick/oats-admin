@@ -180,30 +180,6 @@ class AnalyticsBody extends StatelessWidget {
               ),
             ),
             SizedBox(height: 24),
-            ElevatedButton.icon(
-              onPressed: context.watch<AnalyticsModel>().isLoading
-                  ? null
-                  : () => context.read<AnalyticsModel>().analyzeData(),
-              icon: context.watch<AnalyticsModel>().isLoading
-                  ? SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : Icon(Icons.analytics),
-              label: Text(
-                context.watch<AnalyticsModel>().isLoading
-                    ? 'Analyzing...'
-                    : 'Analyze Data',
-                style: TextStyle(fontSize: 16),
-              ),
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                backgroundColor: Colors.blue,
-                foregroundColor: Colors.white,
-              ),
-            ),
-            SizedBox(height: 24),
             Consumer<AnalyticsModel>(
               builder: (context, model, child) {
                 if (model.error.isNotEmpty) {
@@ -239,6 +215,30 @@ class AnalyticsBody extends StatelessWidget {
                   ),
                 );
               },
+            ),
+            SizedBox(height: 24),
+            ElevatedButton.icon(
+              onPressed: context.watch<AnalyticsModel>().isLoading
+                  ? null
+                  : () => context.read<AnalyticsModel>().analyzeData(),
+              icon: context.watch<AnalyticsModel>().isLoading
+                  ? SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : Icon(Icons.analytics),
+              label: Text(
+                context.watch<AnalyticsModel>().isLoading
+                    ? 'Analyzing...'
+                    : 'Analyze Data',
+                style: TextStyle(fontSize: 16),
+              ),
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                backgroundColor: Colors.blue,
+                foregroundColor: Colors.white,
+              ),
             ),
           ],
         ),

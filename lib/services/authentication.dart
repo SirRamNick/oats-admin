@@ -4,14 +4,9 @@ class AuthenticationService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // Sign in method
-  void signInWithEmailAndPassword(
-    String email, 
-    String password
-  ) => _auth.signInWithEmailAndPassword(
-    email: email, 
-    password: password
-  );
-  
+  Future<void> signInWithEmailAndPassword(String email, String password) =>
+      _auth.signInWithEmailAndPassword(email: email, password: password);
+
   // Retrieve authentication state
   Stream<User?> getAuthenticationState() => _auth.authStateChanges();
 

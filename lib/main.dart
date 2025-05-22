@@ -1,6 +1,6 @@
 import 'package:admin/components/admin_color_theme.dart';
 import 'package:admin/firebase_options.dart';
-import 'package:admin/pages/auth_gate.dart';
+import 'package:admin/auth_gate.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: adminTheme,
-      title: "OATS Admin Site",
+      title: "OATS | Admin Site",
       debugShowCheckedModeBanner: false,
       home: AuthGate(
         model: model!,

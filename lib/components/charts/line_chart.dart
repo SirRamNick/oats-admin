@@ -50,6 +50,7 @@ class _OlopscLineChartState extends State<OlopscLineChart> {
               primaryXAxis: NumericAxis(
                 title: AxisTitle(text: 'Year'),
                 labelStyle: const TextStyle(fontSize: 10),
+                interval: 1,
               ),
               primaryYAxis: NumericAxis(
                 title: AxisTitle(text: 'Percentage (%)'),
@@ -72,7 +73,7 @@ class _OlopscLineChartState extends State<OlopscLineChart> {
             const SizedBox(height: 16),
             _buildDetailedViewToggle(),
 
-            if (_selectedType != null) 
+            if (_selectedType != null)
               Padding(
                 padding: const EdgeInsets.only(top: 16.0),
                 child: _buildDetailedView(),
@@ -167,16 +168,26 @@ class _OlopscLineChartState extends State<OlopscLineChart> {
     double averagePercentage = 0;
     switch (_selectedType!) {
       case EmploymentType.privatelyEmployed:
-        averagePercentage = _employmentData.map((e) => e.privatelyEmployed).reduce((a, b) => a + b) / _employmentData.length;
+        averagePercentage = _employmentData
+                .map((e) => e.privatelyEmployed)
+                .reduce((a, b) => a + b) /
+            _employmentData.length;
         break;
       case EmploymentType.governmentEmployed:
-        averagePercentage = _employmentData.map((e) => e.governmentEmployed).reduce((a, b) => a + b) / _employmentData.length;
+        averagePercentage = _employmentData
+                .map((e) => e.governmentEmployed)
+                .reduce((a, b) => a + b) /
+            _employmentData.length;
         break;
       case EmploymentType.selfEmployed:
-        averagePercentage = _employmentData.map((e) => e.selfEmployed).reduce((a, b) => a + b) / _employmentData.length;
+        averagePercentage =
+            _employmentData.map((e) => e.selfEmployed).reduce((a, b) => a + b) /
+                _employmentData.length;
         break;
       case EmploymentType.others:
-        averagePercentage = _employmentData.map((e) => e.others).reduce((a, b) => a + b) / _employmentData.length;
+        averagePercentage =
+            _employmentData.map((e) => e.others).reduce((a, b) => a + b) /
+                _employmentData.length;
         break;
     }
 

@@ -9,12 +9,20 @@ FloatingActionButton profileHelpActionButton(BuildContext context) =>
       onPressed: () {
         showDialog(
           context: context,
-          builder: (context) => Dialog(
+          builder: (context) => AlertDialog(
             backgroundColor: Colors.white,
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: ListView(
-                children: const [
+            actionsPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text("Close"),
+              ),
+            ],
+            content: const SingleChildScrollView(
+              child: Column(
+                children: [
                   Align(
                     alignment: Alignment.center,
                     child: Text(
