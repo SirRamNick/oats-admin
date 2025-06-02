@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -9,279 +10,127 @@ class OlopscLineChart extends StatefulWidget {
 }
 
 class _OlopscLineChartState extends State<OlopscLineChart> {
-  final List<EmploymentData> _employmentData = [
-    EmploymentData(2018, 45, 30, 15, 10),
-    EmploymentData(2019, 50, 28, 12, 10),
-    EmploymentData(2020, 40, 35, 17, 8),
-    EmploymentData(2021, 55, 25, 14, 6),
-    EmploymentData(2022, 48, 32, 16, 4),
-  ];
+  List<AlumniYearData> _alumniData = [];
+  bool _loading = true;
+  String? _error;
 
-  EmploymentType? _selectedType;
+  @override
+  void initState() {
+    super.initState();
+    _fetchAlumniData();
+  }
+
+  Future<void> _fetchAlumniData() async {
+    try {
+      final snapshot = await FirebaseFirestore.instance.collection('alumni_by_year').get();
+      final data = snapshot.docs.map((doc) {
+        final map = doc.data();
+        return AlumniYearData(
+          year: map['year'] is int ? map['year'] : int.tryParse(map['year'].toString()) ?? 0,
+          value: map['value'] is int ? map['value'] : int.tryParse(map['value'].toString()) ?? 0,
+        );
+      }).toList();
+      data.sort((a, b) => a.year.compareTo(b.year));
+      setState(() {
+        _alumniData = data;
+        _loading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _error = 'Failed to load alumni data: $e';
+        _loading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (_loading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    if (_error != null) {
+      return Center(child: Text(_error!, style: const TextStyle(color: Colors.red)));
+    }
+    // Determine year range
+    final int startYear = 2002;
+    final int endYear = DateTime.now().year - 1;
+    // Fill missing years with value 0
+    final Map<int, int> yearToValue = { for (var d in _alumniData) d.year : d.value };
+    final List<AlumniYearData> displayData = [
+      for (int y = startYear; y <= endYear; y++)
+        AlumniYearData(year: y, value: yearToValue[y] ?? 0)
+    ];
     return Card(
       elevation: 6,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Title and Subtitle
             Text(
-              'Employment Trends',
+              'Alumni Per Year',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: Colors.deepPurple,
                   ),
             ),
             Text(
-              'Annual Employment Status Distribution',
+              'Number of Alumni Surveyed Each Year',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: Colors.grey[600],
                   ),
             ),
-            const SizedBox(height: 16),
-
-            // Chart
+            const SizedBox(height: 24),
             SfCartesianChart(
               primaryXAxis: NumericAxis(
                 title: AxisTitle(text: 'Year'),
-                labelStyle: const TextStyle(fontSize: 10),
-                interval: 1,
+                labelStyle: const TextStyle(fontSize: 12),
+                interval: 2,
+                majorGridLines: const MajorGridLines(width: 0.5),
+                edgeLabelPlacement: EdgeLabelPlacement.shift,
+                minimum: startYear.toDouble(),
+                maximum: endYear.toDouble(),
+                axisLabelFormatter: (AxisLabelRenderDetails details) {
+                  // Show every 2nd year for readability
+                  int year = details.value.toInt();
+                  return ChartAxisLabel(year % 2 == 0 ? year.toString() : '', details.textStyle);
+                },
               ),
               primaryYAxis: NumericAxis(
-                title: AxisTitle(text: 'Percentage (%)'),
-                labelStyle: const TextStyle(fontSize: 10),
-                maximum: 100,
-                interval: 20,
+                title: AxisTitle(text: 'Number of Alumni'),
+                labelStyle: const TextStyle(fontSize: 12),
+                interval: 5,
+                majorGridLines: const MajorGridLines(width: 0.5),
               ),
               tooltipBehavior: TooltipBehavior(
                 enable: true,
-                format: 'point.x : point.y%',
+                format: 'point.x : point.y',
               ),
-              legend: Legend(
-                isVisible: true,
-                position: LegendPosition.bottom,
-                overflowMode: LegendItemOverflowMode.wrap,
-              ),
-              series: _buildChartSeries(),
+              series: [
+                LineSeries<AlumniYearData, int>(
+                  name: 'Alumni',
+                  dataSource: displayData,
+                  xValueMapper: (data, _) => data.year,
+                  yValueMapper: (data, _) => data.value,
+                  color: Colors.blue,
+                  width: 3,
+                  markerSettings: MarkerSettings(
+                    isVisible: true,
+                    color: Colors.blue.shade700,
+                  ),
+                ),
+              ],
             ),
-
-            const SizedBox(height: 16),
-            _buildDetailedViewToggle(),
-
-            if (_selectedType != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: _buildDetailedView(),
-              ),
           ],
         ),
       ),
     );
   }
-
-  List<LineSeries<EmploymentData, num>> _buildChartSeries() {
-    return [
-      LineSeries<EmploymentData, num>(
-        name: 'Privately Employed',
-        dataSource: _employmentData,
-        xValueMapper: (data, _) => data.year,
-        yValueMapper: (data, _) => data.privatelyEmployed,
-        color: Colors.blue,
-        width: 3,
-        markerSettings: MarkerSettings(
-          isVisible: true,
-          color: Colors.blue.shade700,
-        ),
-      ),
-      LineSeries<EmploymentData, num>(
-        name: 'Government Employed',
-        dataSource: _employmentData,
-        xValueMapper: (data, _) => data.year,
-        yValueMapper: (data, _) => data.governmentEmployed,
-        color: Colors.green,
-        width: 3,
-        markerSettings: MarkerSettings(
-          isVisible: true,
-          color: Colors.green.shade700,
-        ),
-      ),
-      LineSeries<EmploymentData, num>(
-        name: 'Self Employed',
-        dataSource: _employmentData,
-        xValueMapper: (data, _) => data.year,
-        yValueMapper: (data, _) => data.selfEmployed,
-        color: Colors.red,
-        width: 3,
-        markerSettings: MarkerSettings(
-          isVisible: true,
-          color: Colors.red.shade700,
-        ),
-      ),
-      LineSeries<EmploymentData, num>(
-        name: 'Others',
-        dataSource: _employmentData,
-        xValueMapper: (data, _) => data.year,
-        yValueMapper: (data, _) => data.others,
-        color: Colors.purple,
-        width: 3,
-        markerSettings: MarkerSettings(
-          isVisible: true,
-          color: Colors.purple.shade700,
-        ),
-      ),
-    ];
-  }
-
-  Widget _buildDetailedViewToggle() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: EmploymentType.values.map((type) {
-          final isSelected = _selectedType == type;
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            child: ChoiceChip(
-              label: Text(type.label),
-              selected: isSelected,
-              onSelected: (_) {
-                setState(() {
-                  // Toggle the selected type
-                  _selectedType = isSelected ? null : type;
-                });
-              },
-              selectedColor: Colors.deepPurple.shade100,
-            ),
-          );
-        }).toList(),
-      ),
-    );
-  }
-
-  Widget _buildDetailedView() {
-    if (_selectedType == null) return const SizedBox.shrink();
-
-    double averagePercentage = 0;
-    switch (_selectedType!) {
-      case EmploymentType.privatelyEmployed:
-        averagePercentage = _employmentData
-                .map((e) => e.privatelyEmployed)
-                .reduce((a, b) => a + b) /
-            _employmentData.length;
-        break;
-      case EmploymentType.governmentEmployed:
-        averagePercentage = _employmentData
-                .map((e) => e.governmentEmployed)
-                .reduce((a, b) => a + b) /
-            _employmentData.length;
-        break;
-      case EmploymentType.selfEmployed:
-        averagePercentage =
-            _employmentData.map((e) => e.selfEmployed).reduce((a, b) => a + b) /
-                _employmentData.length;
-        break;
-      case EmploymentType.others:
-        averagePercentage =
-            _employmentData.map((e) => e.others).reduce((a, b) => a + b) /
-                _employmentData.length;
-        break;
-    }
-
-    final trend = _analyzeTrend(_selectedType!);
-
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '${_selectedType!.label} Details',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Average Percentage: ${averagePercentage.toStringAsFixed(2)}%',
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Trend: $trend',
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ],
-      ),
-    );
-  }
-
-  String _analyzeTrend(EmploymentType type) {
-    List<double> percentages;
-    switch (type) {
-      case EmploymentType.privatelyEmployed:
-        percentages = _employmentData.map((e) => e.privatelyEmployed).toList();
-        break;
-      case EmploymentType.governmentEmployed:
-        percentages = _employmentData.map((e) => e.governmentEmployed).toList();
-        break;
-      case EmploymentType.selfEmployed:
-        percentages = _employmentData.map((e) => e.selfEmployed).toList();
-        break;
-      case EmploymentType.others:
-        percentages = _employmentData.map((e) => e.others).toList();
-        break;
-    }
-
-    if (percentages.first < percentages.last) {
-      return 'Increasing 📈';
-    } else if (percentages.first > percentages.last) {
-      return 'Decreasing 📉';
-    } else {
-      return 'Stable ➡️';
-    }
-  }
 }
 
-class EmploymentData {
+class AlumniYearData {
   final int year;
-  final double privatelyEmployed;
-  final double governmentEmployed;
-  final double selfEmployed;
-  final double others;
-
-  EmploymentData(
-    this.year,
-    this.privatelyEmployed,
-    this.governmentEmployed,
-    this.selfEmployed,
-    this.others,
-  );
-}
-
-enum EmploymentType {
-  privatelyEmployed,
-  governmentEmployed,
-  selfEmployed,
-  others;
-
-  String get label {
-    switch (this) {
-      case privatelyEmployed:
-        return 'Privately Employed';
-      case governmentEmployed:
-        return 'Government Employed';
-      case selfEmployed:
-        return 'Self Employed';
-      case others:
-        return 'Others';
-    }
-  }
+  final int value;
+  AlumniYearData({required this.year, required this.value});
 }
